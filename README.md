@@ -8,4 +8,4 @@
 "Enter" = Interact
 
 
-If you press "spacebar" from the staring screen you will jump straight to the boss fight
+If you press "spacebar" from the starting screen you will jump straight to the boss fight
