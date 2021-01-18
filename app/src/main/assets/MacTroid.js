@@ -95,7 +95,8 @@ var laserDoor = new Audio('laserDoor.wav');
 var speedCharge = new Audio('speedCharge.wav');
 var beam = new Audio('beam.FLAC');
 var laserAttack = new Audio('laserAttack.OGG');
-var bossMusic = new Audio('bossMusic.mp3');
+var bossMusic = new Audio('bossMusic2.mp3');
+var levelMusic = new Audio('levelMusic.mp3');
 
 //Objects start------------------------------
 function LivingObj()
@@ -612,6 +613,8 @@ function levelPart3(){
 
 function gameplay()
 {
+    levelMusic.volume = 0.5;
+    levelMusic.play();
     playerMovement();
     flyingMovement();
     gruntMovement();
@@ -743,6 +746,8 @@ function gameplay()
     }
     if (totalHealth <= 0)
     {
+        levelMusic.pause();
+        levelMusic.currentTime = 0;
         screenNo = 2;
     }
 }
@@ -1042,6 +1047,8 @@ function colling ()
     {
         if (endLevel !== null)
         {
+            levelMusic.pause();
+            levelMusic.currentTime = 0;
             screenNo = 3;
         }
     }
@@ -1129,7 +1136,7 @@ for (var enemyNumber = 0; enemyNumber < grunt.length; enemyNumber++)
             {
                 grunt[enemyNumber].hp -= 1;
                 bullet[i].y = -300;
-                enemyHurt.volume = 0.1;
+                enemyHurt.volume = 0.05;
                 enemyHurt.currentTime = 0;
                 enemyHurt.play();
             }
@@ -1156,7 +1163,7 @@ for (var enemyNumber = 0; enemyNumber < grunt.length; enemyNumber++)
                 {
                     boss.hp -= 1;
                     bullet[i].y = -300;
-                    enemyHurt.volume = 0.1;
+                    enemyHurt.volume = 0.05
                     enemyHurt.currentTime = 0;
                     enemyHurt.play();
                 }
@@ -1164,7 +1171,7 @@ for (var enemyNumber = 0; enemyNumber < grunt.length; enemyNumber++)
                 {
                     boss.hp -= 1;
                     bullet[i].y = -300;
-                    enemyHurt.volume = 0.1;
+                    enemyHurt.volume = 0.05;
                     enemyHurt.currentTime = 0;
                     enemyHurt.play();
                 }
@@ -1217,23 +1224,26 @@ function deathCheck()
 
 function renderGameOver() {
     //Clear Canvas----------------------------------------
-    canvasContext.clearRect(0, 0, canvas.width * 2, canvas.height * 2);
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+         var startScreen = new Image();
+            startScreen.src = 'startBackground.png';
+            canvasContext.drawImage(startScreen, 0, 0, canvas.width, canvas.height);
 
-    canvasContext.drawImage(gameOver, 0, 0, canvas.width, canvas.height);
-    //requestAnimationFrame(renderGameOver);
+            var mactroidStart = new Image();
+            mactroidStart.src = 'mactroidStart.png';
+            canvasContext.drawImage(mactroidStart, 0, 0, 100, 150);
+            canvasContext.fillStyle = "lightskyblue";
+            canvasContext.font = "24px Arial";
+            canvasContext.fillText("YOU LOSE", 95, 40);
 
-    for (var enemyNo = 0; enemyNo < 19; enemyNo++)
-    {
-        bullet[enemyNo] = null;
-        flying[enemyNo] = null;
-        grunt[enemyNo] = null;
-    }
+            canvasContext.font = "12px Arial";
+            canvasContext.fillText("Press Shift to Restart", 115, 120);
 
-     if (keys[16])
-     {
-        init();
-        screenNo = 0;
-     }
+          if (keys[16])
+          {
+            start();
+            screenNo = 0;
+          }
 }
 
 
@@ -1416,7 +1426,7 @@ var bossPos = 1;
 	    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 	    bossLayout();
         canvasContext.drawImage(boss.img, boss.spriteX, boss.spriteY, 130, 100, boss.x, boss.y, boss.width, boss.height);
-        bossMusic.volume = 0.4;
+        bossMusic.volume = 0.5;
         playerBoss();
         crouching = macTroid.y + 12;
         standing = macTroid.y - 12;
@@ -1502,6 +1512,8 @@ var bossPos = 1;
 	    }
 	        if (totalHealth <= 0)
             {
+                bossMusic.pause();
+                bossMusic.currentTime = 0;
                 screenNo = 2;
             }
 	}
@@ -1748,7 +1760,26 @@ var bossPos = 1;
     function winScreen()
     {
         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-        canvasContext.drawImage(win, 0, 0, canvas.width, canvas.height);
+         var startScreen = new Image();
+            startScreen.src = 'startBackground.png';
+            canvasContext.drawImage(startScreen, 0, 0, canvas.width, canvas.height);
+
+            var mactroidStart = new Image();
+            mactroidStart.src = 'mactroidStart.png';
+            canvasContext.drawImage(mactroidStart, 0, 0, 100, 150);
+            canvasContext.fillStyle = "lightskyblue";
+            canvasContext.font = "24px Arial";
+            canvasContext.fillText("YOU WIN", 95, 40);
+
+            canvasContext.font = "12px Arial";
+            canvasContext.fillText("Press Shift to Restart", 115, 120);
+
+          if (keys[16])
+          {
+            bossMusic.currentTime = 0;
+            start();
+            screenNo = 0;
+          }
     }
 
 	function randomNo()
